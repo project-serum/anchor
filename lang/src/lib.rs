@@ -41,6 +41,11 @@ mod state;
 mod sysvar;
 mod vec;
 
+// Internal module used by macros.
+pub mod __private {
+    pub use base64;
+}
+
 pub use crate::context::{Context, CpiContext};
 pub use crate::cpi_account::CpiAccount;
 pub use crate::ctor::Ctor;
@@ -50,6 +55,7 @@ pub use crate::sysvar::Sysvar;
 pub use anchor_attribute_access_control::access_control;
 pub use anchor_attribute_account::account;
 pub use anchor_attribute_error::error;
+pub use anchor_attribute_event::{emit, event};
 pub use anchor_attribute_interface::interface;
 pub use anchor_attribute_program::program;
 pub use anchor_attribute_state::state;
@@ -169,11 +175,16 @@ pub trait InstructionData: AnchorSerialize {
     fn data(&self) -> Vec<u8>;
 }
 
+/// The serialized event data to be emitted via a Solana log.
+pub trait EventData: AnchorSerialize {
+    fn data(&self) -> Vec<u8>;
+}
+
 /// The prelude contains all commonly used components of the crate.
 /// All programs should include it via `anchor_lang::prelude::*;`.
 pub mod prelude {
     pub use super::{
-        access_control, account, error, interface, program, state, AccountDeserialize,
+        access_control, account, emit, error, event, interface, program, state, AccountDeserialize,
         AccountSerialize, Accounts, AccountsExit, AccountsInit, AnchorDeserialize, AnchorSerialize,
         Context, CpiAccount, CpiContext, Ctor, ProgramAccount, ProgramState, Sysvar, ToAccountInfo,
         ToAccountInfos, ToAccountMetas,

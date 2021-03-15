@@ -100,6 +100,16 @@ export class Program {
     const inflatedIdl = inflate(idlAccount.data);
     return JSON.parse(decodeUtf8(inflatedIdl));
   }
+
+	/**
+	 * Invokes the given callback everytime the given event is emitted.
+	 */
+	public async addEventListener(
+		event: string,
+		callback: (event: any) => void,
+	): Promise<void> {
+		callback("hello world");
+	}
 }
 
 function decodeUtf8(array: Uint8Array): string {

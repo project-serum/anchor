@@ -10,6 +10,7 @@ pub fn event(
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
     let event_strct = parse_macro_input!(input as syn::ItemStruct);
+
     let event_name = &event_strct.ident;
 
     let discriminator: proc_macro2::TokenStream = {
@@ -22,7 +23,7 @@ pub fn event(
     };
 
     proc_macro::TokenStream::from(quote! {
-        #[derive(AnchorSerialize, AnchorDeserialize)]
+        #[derive(anchor_lang::EventIndex, AnchorSerialize, AnchorDeserialize)]
         #event_strct
 
         impl anchor_lang::EventData for #event_name {
@@ -45,4 +46,12 @@ pub fn emit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
             anchor_lang::solana_program::msg!(msg_str);
         }
     })
+}
+
+// EventIndex is a marker macro. It functionally does nothing other than
+// allow one to mark fields with the `#[index]` inert attribute, which is
+// used to add metadata to IDLs.
+#[proc_macro_derive(EventIndex, attributes(index))]
+pub fn derive_event(_item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    proc_macro::TokenStream::from(quote! {})
 }

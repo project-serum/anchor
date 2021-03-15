@@ -55,7 +55,7 @@ pub use crate::sysvar::Sysvar;
 pub use anchor_attribute_access_control::access_control;
 pub use anchor_attribute_account::account;
 pub use anchor_attribute_error::error;
-pub use anchor_attribute_event::{emit, event};
+pub use anchor_attribute_event::{emit, event, EventIndex};
 pub use anchor_attribute_interface::interface;
 pub use anchor_attribute_program::program;
 pub use anchor_attribute_state::state;

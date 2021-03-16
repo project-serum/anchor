@@ -9,15 +9,18 @@ describe('events', () => {
   it('Is initialized!', async () => {
 			const program = anchor.workspace.Events;
 
-			let prom = new Promise((resolve, _reject) => {
-					program.addEventListener('MyEvent', (event) => {
+			let listener = null;
+
+			let prom = new Promise(async (resolve, _reject) => {
+					listener = program.addEventListener('MyEvent', (event) => {
 							resolve(event);
 					});
+					const tx = await program.rpc.initialize();
 			});
-
-			const tx = await program.rpc.initialize();
 			let event = await prom;
 
-			console.log('event', event);
+			console.log('event yay', event);
+
+			await program.removeEventListener(listener);
   });
 });

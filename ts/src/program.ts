@@ -104,11 +104,20 @@ export class Program {
 	/**
 	 * Invokes the given callback everytime the given event is emitted.
 	 */
-	public async addEventListener(
+	public addEventListener(
 		event: string,
 		callback: (event: any) => void,
 	): Promise<void> {
-		callback("hello world");
+		// @ts-ignore
+		return this.provider.connection.onLogs([this.programId], (logs: any) => {
+			callback(logs);
+		});
+
+	}
+
+	public async removeEventListener(listener: number): Promise<void> {
+		// @ts-ignore
+		return this.provider.connection.removeOnLogsListener(listener);
 	}
 }
 
